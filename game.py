@@ -98,8 +98,18 @@ class Enemy(pygame.sprite.Sprite):
 
 # display lives
 
-# global variables
+# timer
+class Timer():
+    def __init__(self):
+        font = pygame.font.SysFont("Garamond",26)
+        text = font.render(time, True, WHITE)
+        text_rect = text.get_rect()
+        text_rect.center = (x, y)
 
+    def update(self):
+        pass
+
+ 
 # Group all spirtes
 all_sprites = pygame.sprite.Group()
 all_enemies = pygame.sprite.Group()
@@ -111,7 +121,9 @@ all_sprites.add(ship)
 
 # main game loop
 def game():
+    
     while True:
+        
         
         while len(all_enemies) < 8:
             new_enemy = Enemy()
@@ -150,3 +162,9 @@ def game():
 
 game()
 
+# time 60 seconds
+# Add zig zag
+# initial screen
+# final screen
+# sound
+# power up for 6 seconds
