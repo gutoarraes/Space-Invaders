@@ -1,5 +1,6 @@
 # Imports
 import pygame
+import pygame.freetype
 import sys
 import random
 from pygame.locals import *
@@ -15,11 +16,17 @@ YELLOW = (255,255,0)
 WHITE = (255, 255, 255)
 size = width, height = (1024, 1024) 
 FPS = 60
+score = 0
+font = pygame.font.Font("8-BIT WONDER.TTF", 16)
+
+
 
 # Screen
 screen = pygame.display.set_mode(size, 0, 32)
 pygame.display.set_caption("Space Invaders")
 clock = pygame.time.Clock()
+pygame.time.set_timer(pygame.USEREVENT, 1000)
+
 
 # images
 ship = pygame.image.load("ship.png")
@@ -29,8 +36,6 @@ enemy = enemy.convert()
 background  = pygame.image.load("background.png")
 background = pygame.transform.scale(background, size)
 background = background.convert()
-
-
 
 # sounds
 
@@ -49,9 +54,9 @@ class Ship(pygame.sprite.Sprite):
         self.speed_x = 0
         events = pygame.key.get_pressed()
         if events[pygame.K_a]:
-            self.speed_x = -10
+            self.speed_x = -13
         elif events[pygame.K_d]:
-            self.speed_x = 10
+            self.speed_x = 13
         self.rect.centerx += self.speed_x
 
     def boundary(self):
@@ -98,18 +103,19 @@ class Enemy(pygame.sprite.Sprite):
 
 # display lives
 
-# timer
-class Timer():
-    def __init__(self):
-        font = pygame.font.SysFont("Garamond",26)
-        text = font.render(time, True, WHITE)
-        text_rect = text.get_rect()
-        text_rect.center = (x, y)
+# message to screen
+def message_to_screen(message, color, font_size, x, y):
+    text = font.render(message, True, BLACK)
+    text_rect = text.get_rect()
+    text_rect.center = (x, y)
+    screen.blit(text, text_rect)
 
-    def update(self):
-        pass
+# global variables
+class Variables():
+    score = 0
+    counter = 30
 
- 
+
 # Group all spirtes
 all_sprites = pygame.sprite.Group()
 all_enemies = pygame.sprite.Group()
@@ -121,10 +127,10 @@ all_sprites.add(ship)
 
 # main game loop
 def game():
-    
-    while True:
+    while Variables.counter > 0:
         
-        
+        message_to_screen(str(Variables.score) + " Points", RED, 32, 940, 32)
+        message_to_screen("Time " + str(Variables.counter), RED, 32, 80, 32 )
         while len(all_enemies) < 8:
             new_enemy = Enemy()
             all_sprites.add(new_enemy)
@@ -136,16 +142,19 @@ def game():
         for event in pygame.event.get():
             if event.type == QUIT:
                 sys.exit()
+            elif event.type == USEREVENT:
+                Variables.counter -= 1
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     new_shot = Shot()
                     all_shots.add(new_shot)
-                    all_sprites.add(new_shot)
+                    all_sprites.add(new_shot)   
                         
 
         # check if a shot is in the rectangle of an enemy sprite, if so, kill enemy and shot
         collision = pygame.sprite.groupcollide(all_shots, all_enemies, True, True)
-
+        if collision:
+            Variables.score +=  50
 
         # update all sprites
         all_sprites.update()
@@ -156,15 +165,16 @@ def game():
         screen.blit(background,(0,0))
 
 
-    
-
 # end of game loop
 
+
 game()
+
 
 # time 60 seconds
 # Add zig zag
 # initial screen
 # final screen
 # sound
-# power up for 6 seconds
+# power up for X seconds
+# local cache for high score
