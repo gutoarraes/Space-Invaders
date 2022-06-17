@@ -225,9 +225,8 @@ def credit():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == KEYDOWN:
-                print(event.key) 
-                if pygame.K_KP_ENTER or event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
+            if event.type == KEYDOWN: 
+                if event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
                     game()
                 elif event.key == pygame.K_BACKSPACE:
                     othermenu()
