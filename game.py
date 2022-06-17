@@ -9,16 +9,15 @@ from time import sleep
 
 # settings
 pygame.init()
-pygame.mixer .init()
+pygame.mixer.init()
 BLACK = (0, 0, 0)
 RED = (255,0,0)
 YELLOW = (255,255,0)
 WHITE = (255, 255, 255)
-size = width, height = (1024, 1024) 
+size = width, height = ((1024, 1024)) 
 FPS = 60
 score = 0
 font = pygame.font.Font("8-BIT WONDER.TTF", 16)
-
 
 
 # Screen
@@ -36,6 +35,15 @@ enemy = enemy.convert()
 background  = pygame.image.load("background.png")
 background = pygame.transform.scale(background, size)
 background = background.convert()
+menu1 = pygame.image.load("menu1.png")
+menu1 = pygame.transform.scale(menu1, size)
+menu1 = menu1.convert()
+menu2 = pygame.image.load("menu2.png")
+menu2 = pygame.transform.scale(menu2, size)
+menu2 = menu2.convert()
+credits = pygame.image.load("credits.png")
+credits = pygame.transform.scale(credits, size)
+credits = credits.convert()
 
 # sounds
 
@@ -129,6 +137,9 @@ all_sprites.add(ship)
 def game():
     while Variables.counter > 0:
         
+        # draw to screen
+        screen.blit(background,(0,0))
+
         message_to_screen(str(Variables.score) + " Points", RED, 32, 940, 32)
         message_to_screen("Time " + str(Variables.counter), RED, 32, 80, 32 )
         while len(all_enemies) < 8:
@@ -159,16 +170,72 @@ def game():
         # update all sprites
         all_sprites.update()
 
-        # draw to screen
+        
+
         all_sprites.draw(screen)
         pygame.display.update()
-        screen.blit(background,(0,0))
+        clock.tick(FPS)
+
 
 
 # end of game loop
+# s = 115 w = 119 down = 1073741906 up = 1073741905
+def menu():
+    while True:
 
+        clock.tick(FPS)
+        screen.blit(menu1,(0,0))
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                    print(event.key)
+                    othermenu()
+                elif event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
+                    game()
 
-game()
+        pygame.display.update()
+        screen.blit(menu1,(0,0))
+
+def othermenu():
+    while True:
+        screen.blit(menu2,(0,0))
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                    menu()
+                elif event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN  or event.key == pygame.K_SPACE:
+                    credit()
+                
+        
+        pygame.display.update()
+        clock.tick(FPS)
+
+def credit():
+    while True:
+        screen.blit(credits,(0,0))
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == KEYDOWN:
+                print(event.key) 
+                if pygame.K_KP_ENTER or event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
+                    game()
+                elif event.key == pygame.K_BACKSPACE:
+                    othermenu()
+    
+        pygame.display.update()
+        clock.tick(FPS)
+
+menu()
 
 
 # time 60 seconds
