@@ -6,6 +6,7 @@ import random
 from pygame.locals import *
 from os import path
 from time import sleep
+import webbrowser
 
 # settings
 pygame.init()
@@ -18,6 +19,7 @@ size = width, height = ((1024, 1024))
 FPS = 60
 score = 0
 font = pygame.font.Font("8-BIT WONDER.TTF", 16)
+font2 = pygame.font.Font("8-BIT WONDER.TTF", 80)
 
 
 # Screen
@@ -44,8 +46,10 @@ menu2 = menu2.convert()
 credits = pygame.image.load("credits.png")
 credits = pygame.transform.scale(credits, size)
 credits = credits.convert()
+finalScore = pygame.image.load("final score.png")
+finalScore = pygame.transform.scale(finalScore, size)
+finalScore = finalScore.convert()
 
-# sounds
 
 # ship
 class Ship(pygame.sprite.Sprite):
@@ -109,14 +113,19 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect.y > 1024:
             self.kill()
 
-# display lives
-
 # message to screen
 def message_to_screen(message, color, font_size, x, y):
     text = font.render(message, True, BLACK)
     text_rect = text.get_rect()
     text_rect.center = (x, y)
     screen.blit(text, text_rect)
+
+def final_score_text(message, color, font_size, x, y):
+    text = font2.render(message, True, BLACK)
+    text_rect = text.get_rect()
+    text_rect.center = (x, y)
+    screen.blit(text, text_rect)
+    
 
 # global variables
 class Variables():
@@ -170,12 +179,11 @@ def game():
         # update all sprites
         all_sprites.update()
 
-        
-
         all_sprites.draw(screen)
         pygame.display.update()
         clock.tick(FPS)
-
+    final_score() 
+        
 
 
 # end of game loop
@@ -220,7 +228,8 @@ def othermenu():
 def credit():
     while True:
         screen.blit(credits,(0,0))
-
+        # pygame.Rect(left, top, width, height)
+        rect = pygame.Rect(275, 545, 530, 30)
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -230,17 +239,37 @@ def credit():
                     game()
                 elif event.key == pygame.K_BACKSPACE:
                     othermenu()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                pos = event.pos
+                if rect.collidepoint(pos):
+                    webbrowser.open("https://github.com/gutoarraes")
+
     
+        pygame.display.update()
+        clock.tick(FPS)
+
+def final_score():
+    sleep(1)
+    while True:
+        screen.blit(finalScore,(0,0))
+        final_score_text(str(Variables.score), BLACK, 70, width*0.52, height*0.5)
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN  or event.key == pygame.K_SPACE:
+                    Variables.counter = 30
+                    Variables.score = 0
+                    for enemy in all_enemies:
+                        enemy.kill()
+                    for shot in all_shots:
+                        shot.kill()
+                    game()
+                
         pygame.display.update()
         clock.tick(FPS)
 
 menu()
 
-
-# time 60 seconds
-# Add zig zag
-# initial screen
-# final screen
-# sound
-# power up for X seconds
-# local cache for high score
