@@ -8,13 +8,12 @@
 **SPACE** - shoots a bullet
 
 ### To do's
-* Add shooting sound;
-* Move all images to a folder;
-* ~Add score~;
-* ~Add Lives~;
-* Add collision explosion;
-* ~Create final score screen~;
-* ~Initial "start" screen~;
+[ ] Add shooting sound;
+[ ] ~Add score~;
+[ ] ~Add Lives~;
+[ ] Add collision explosion;
+[x] ~Create final score screen~;
+[x] Initial "start" screen;
 
 ### Future ideas
 * Multiplayer;
