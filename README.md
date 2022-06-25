@@ -12,7 +12,7 @@
 - [ ] ~Add score~;
 - [ ] ~Add Lives~;
 - [ ] Add collision explosion;
-- [x] ~Create final score screen~;
+- [x] Create final score screen;
 - [x] Initial "start" screen;
 
 ### Future ideas
