@@ -5,16 +5,16 @@
 ### Play
 **A** - moves *left*\
 **D** - moves *right*\
-**SPACE** - shoot a bullet
+**SPACE** - shoots a bullet
 
 ### To do's
 * Add shooting sound;
 * Move all images to a folder;
-* Add score;
-* Add Lives;
-* Add collision effect;
-* Create final score screen;
-* Initial "start" screen;
+* ~Add score~;
+* ~Add Lives~;
+* Add collision explosion;
+* ~Create final score screen~;
+* ~Initial "start" screen~;
 
 ### Future ideas
 * Multiplayer;
