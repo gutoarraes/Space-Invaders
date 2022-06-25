@@ -1,7 +1,6 @@
 # Space-Invaders
 👽 Enemy ships are coming your way, shoot them to earn points.\
-❤️ Each ship that slips by you will cost you 1 life. \
-☠️ After you loose 3 lives the game is over.
+☠️ The game is over after 30 seconds.
 
 ### Play
 **A** - moves *left*\
