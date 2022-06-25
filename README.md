@@ -3,8 +3,8 @@
 ☠️ The game is over after 30 seconds.
 
 ### Play
-**A** - moves *left*\
-**D** - moves *right*\
+**A / Left arrow** - moves *left*\
+**D / right arrow** - moves *right*\
 **SPACE** - shoots a bullet
 
 ### To do's
