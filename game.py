@@ -20,7 +20,7 @@ FPS = 60
 score = 0
 font = pygame.font.Font("8-BIT WONDER.TTF", 16)
 font2 = pygame.font.Font("8-BIT WONDER.TTF", 80)
-
+laser_sound = pygame.mixer.Sound("laser.mp3")
 
 # Screen
 screen = pygame.display.set_mode(size, 0, 32)
@@ -167,6 +167,8 @@ def game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     new_shot = Shot()
+                    pygame.mixer.Sound.play(laser_sound)
+                    pygame.mixer.music.stop()
                     all_shots.add(new_shot)
                     all_sprites.add(new_shot)
 
