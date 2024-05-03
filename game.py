@@ -106,15 +106,6 @@ class Hearts(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = heart
         self.rect = self.image.get_rect()
-        self.rect.x = 156
-        # self.image2 = heart
-        # self.rect2 = self.image2.get_rect()
-        # self.rect1.x = 206
-        # self.image3 = heart
-        # self.rect3 = self.image3.get_rect()
-        # self.rect1.x = 256
-        # self.rect1.y = 14
-        # self.rect2.y = 14
         self.rect.y = 14
 
 class Enemy(pygame.sprite.Sprite):
@@ -177,7 +168,6 @@ def game():
             all_sprites.add(new_enemy)
             all_enemies.add(new_enemy)
 
-
         heart1 = Hearts()
         hearts = []
         clock.tick(FPS)
@@ -201,13 +191,6 @@ def game():
         if collision:
             pygame.mixer.Sound.play(enemy_kill_sound)
             Variables.score +=  50
-
-        # for enemy in all_enemies:
-        #     if enemy.rect.y > 1000:
-        #         Variables.lives = Variables.lives - 1
-        #         print(Variables.lives)
-
-        # update all sprites
 
         for i in range(Variables.lives):
             hearts.append(heart)
