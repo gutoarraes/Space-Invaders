@@ -8,6 +8,7 @@ import pygame.freetype
 from pygame.locals import *
 import webbrowser
 
+
 # settings
 pygame.init()
 pygame.mixer.init()
@@ -168,7 +169,6 @@ def game():
             all_sprites.add(new_enemy)
             all_enemies.add(new_enemy)
 
-        heart1 = Hearts()
         hearts = []
         clock.tick(FPS)
 
@@ -213,9 +213,9 @@ def menu():
                 pygame.quit()
                 sys.exit()
             if event.type == KEYDOWN:
-                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                if event.key in (pygame.K_s, pygame.K_DOWN):
                     othermenu()
-                elif event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
+                elif event.key in (pygame.K_KP_ENTER, pygame.K_RETURN, pygame.K_SPACE):
                     game()
 
         pygame.display.update()
@@ -230,9 +230,9 @@ def othermenu():
                 pygame.quit()
                 sys.exit()
             if event.type == KEYDOWN:
-                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                if event.key in (pygame.K_w, pygame.K_UP):
                     menu()
-                elif event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN  or event.key == pygame.K_SPACE:
+                elif event.key in (pygame.K_KP_ENTER, pygame.K_RETURN, pygame.K_SPACE):
                     credit()
 
 
@@ -249,7 +249,7 @@ def credit():
                 pygame.quit()
                 sys.exit()
             if event.type == KEYDOWN:
-                if event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
+                if event.key in (pygame.K_KP_ENTER, pygame.K_RETURN, pygame.K_SPACE):
                     game()
                 elif event.key == pygame.K_BACKSPACE:
                     othermenu()
@@ -263,7 +263,7 @@ def credit():
         clock.tick(FPS)
 
 def final_score():
-    sleep(1)
+
     while True:
         screen.blit(finalScore,(0,0))
         final_score_text(str(Variables.score), BLACK, 70, width*0.52, height*0.5)
@@ -273,17 +273,16 @@ def final_score():
                 pygame.quit()
                 sys.exit()
             if event.type == KEYDOWN:
-                if event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN  or event.key == pygame.K_SPACE:
+                if event.key in (pygame.K_KP_ENTER, pygame.K_RETURN, pygame.K_SPACE):
                     Variables.counter = 30
                     Variables.score = 1
                     for enemy in all_enemies:
                         enemy.kill()
                     for shot in all_shots:
                         shot.kill()
-                    game()
+                game()
 
         pygame.display.update()
         clock.tick(FPS)
 
 menu()
-
