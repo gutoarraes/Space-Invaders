@@ -101,18 +101,26 @@ class Shot(pygame.sprite.Sprite):
             self.kill()
 
 
-class Heart(pygame.sprite.Sprite):
+class Hearts(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = heart
         self.rect = self.image.get_rect()
+        self.rect.x = 156
+        # self.image2 = heart
+        # self.rect2 = self.image2.get_rect()
+        # self.rect1.x = 206
+        # self.image3 = heart
+        # self.rect3 = self.image3.get_rect()
+        # self.rect1.x = 256
+        # self.rect1.y = 14
+        # self.rect2.y = 14
         self.rect.y = 14
-
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.speed_y = random.randint(2, 6)
+        self.speed_y = random.randint(4, 8)
         self.image = enemy
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, 1000)
@@ -168,12 +176,10 @@ def game():
             new_enemy = Enemy()
             all_sprites.add(new_enemy)
             all_enemies.add(new_enemy)
-        # Run game at 60 FPS
-        for i in range(Variables.lives):
-            heart1 = Heart()
-            heart1.rect.x = 156 + (i * 50)
-            all_sprites.add(heart1)
 
+
+        heart1 = Hearts()
+        hearts = []
         clock.tick(FPS)
 
         # check for events
@@ -190,26 +196,30 @@ def game():
                     all_shots.add(new_shot)
                     all_sprites.add(new_shot)
 
-
         # check if a shot is in the rectangle of an enemy sprite, if so, kill enemy and shot
         collision = pygame.sprite.groupcollide(all_shots, all_enemies, True, True)
         if collision:
             pygame.mixer.Sound.play(enemy_kill_sound)
-            pygame.mixer.music.stop()
             Variables.score +=  50
 
-        # update all sprites
-        all_sprites.update()
+        # for enemy in all_enemies:
+        #     if enemy.rect.y > 1000:
+        #         Variables.lives = Variables.lives - 1
+        #         print(Variables.lives)
 
+        # update all sprites
+
+        for i in range(Variables.lives):
+            hearts.append(heart)
+            screen.blit(hearts[i],(156  + (50 * i), 14))
+        all_sprites.update()
         all_sprites.draw(screen)
         pygame.display.update()
         clock.tick(FPS)
     final_score()
 
 
-
 # end of game loop
-# s = 115 w = 119 down = 1073741906 up = 1073741905
 def menu():
     while True:
 
