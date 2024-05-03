@@ -1,11 +1,11 @@
 # Imports
-import pygame
-import pygame.freetype
 import sys
-import random
-from pygame.locals import *
 from os import path
 from time import sleep
+import random
+import pygame
+import pygame.freetype
+from pygame.locals import *
 import webbrowser
 
 # settings
@@ -17,10 +17,11 @@ YELLOW = (255,255,0)
 WHITE = (255, 255, 255)
 size = width, height = ((1024, 1024))
 FPS = 60
-score = 0
+score = 1
 font = pygame.font.Font("8-BIT WONDER.TTF", 16)
 font2 = pygame.font.Font("8-BIT WONDER.TTF", 80)
 laser_sound = pygame.mixer.Sound("laser.mp3")
+enemy_kill_sound = pygame.mixer.Sound("enemy_kill.wav")
 
 # Screen
 screen = pygame.display.set_mode(size, 0, 32)
@@ -49,6 +50,8 @@ credits = credits.convert()
 finalScore = pygame.image.load("final score.png")
 finalScore = pygame.transform.scale(finalScore, size)
 finalScore = finalScore.convert()
+heart = pygame.image.load("heart.png")
+heart = pygame.transform.scale(heart, (44, 44))
 
 
 # ship
@@ -98,7 +101,14 @@ class Shot(pygame.sprite.Sprite):
             self.kill()
 
 
-# enemy
+class Heart(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = heart
+        self.rect = self.image.get_rect()
+        self.rect.y = 14
+
+
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -112,6 +122,8 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = self.rect.y + self.speed_y
         if self.rect.y > 1024:
             self.kill()
+            Variables.lives -= 1
+
 
 # message to screen
 def message_to_screen(message, color, font_size, x, y):
@@ -129,8 +141,9 @@ def final_score_text(message, color, font_size, x, y):
 
 # global variables
 class Variables():
-    score = 0
+    score = 1
     counter = 30
+    lives = 3
 
 
 # Group all spirtes
@@ -144,7 +157,7 @@ all_sprites.add(ship)
 
 # main game loop
 def game():
-    while Variables.counter > 0:
+    while (Variables.counter > 0 and Variables.lives > 0):
 
         # draw to screen
         screen.blit(background,(0,0))
@@ -156,6 +169,11 @@ def game():
             all_sprites.add(new_enemy)
             all_enemies.add(new_enemy)
         # Run game at 60 FPS
+        for i in range(Variables.lives):
+            heart1 = Heart()
+            heart1.rect.x = 156 + (i * 50)
+            all_sprites.add(heart1)
+
         clock.tick(FPS)
 
         # check for events
@@ -176,6 +194,8 @@ def game():
         # check if a shot is in the rectangle of an enemy sprite, if so, kill enemy and shot
         collision = pygame.sprite.groupcollide(all_shots, all_enemies, True, True)
         if collision:
+            pygame.mixer.Sound.play(enemy_kill_sound)
+            pygame.mixer.music.stop()
             Variables.score +=  50
 
         # update all sprites
@@ -201,7 +221,6 @@ def menu():
                 sys.exit()
             if event.type == KEYDOWN:
                 if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                    print(event.key)
                     othermenu()
                 elif event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
                     game()
@@ -263,7 +282,7 @@ def final_score():
             if event.type == KEYDOWN:
                 if event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN  or event.key == pygame.K_SPACE:
                     Variables.counter = 30
-                    Variables.score = 0
+                    Variables.score = 1
                     for enemy in all_enemies:
                         enemy.kill()
                     for shot in all_shots:
