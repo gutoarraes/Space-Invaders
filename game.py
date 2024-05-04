@@ -1,11 +1,8 @@
 # Imports
 import sys
-from os import path
-from time import sleep
 import random
 import pygame
 import pygame.freetype
-from pygame.locals import *
 import webbrowser
 
 
@@ -13,8 +10,8 @@ import webbrowser
 pygame.init()
 pygame.mixer.init()
 BLACK = (0, 0, 0)
-RED = (255,0,0)
-YELLOW = (255,255,0)
+RED = (255, 0, 0)
+YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 size = width, height = ((1024, 1024))
 FPS = 60
@@ -34,9 +31,9 @@ pygame.time.set_timer(pygame.USEREVENT, 1000)
 # images
 ship = pygame.image.load("ship.png")
 enemy = pygame.image.load("enemy1.png").convert_alpha()
-enemy.set_colorkey((255,255,255))
+enemy.set_colorkey((255, 255, 255))
 enemy = enemy.convert()
-background  = pygame.image.load("background.png")
+background = pygame.image.load("background.png")
 background = pygame.transform.scale(background, size)
 background = background.convert()
 menu1 = pygame.image.load("menu1.png")
@@ -61,10 +58,9 @@ class Ship(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = ship
         self.rect = self.image.get_rect()
-        self.rect.centerx = width/2
+        self.rect.centerx = width / 2
         self.rect.y = 930
         self.speed_x = 0
-
 
     def movement(self):
         self.speed_x = 0
@@ -79,17 +75,18 @@ class Ship(pygame.sprite.Sprite):
         if self.rect.left < 0:
             self.rect.left = -5
         elif self.rect.right > width:
-            self.rect.right = width +10
+            self.rect.right = width + 10
 
     def update(self):
         self.movement()
         self.boundary()
 
+
 # shots
 class Shot(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((3,8))
+        self.image = pygame.Surface((3, 8))
         self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
         self.speed_y = -15
@@ -108,6 +105,7 @@ class Hearts(pygame.sprite.Sprite):
         self.image = heart
         self.rect = self.image.get_rect()
         self.rect.y = 14
+
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
@@ -131,6 +129,7 @@ def message_to_screen(message, color, font_size, x, y):
     text_rect = text.get_rect()
     text_rect.center = (x, y)
     screen.blit(text, text_rect)
+
 
 def final_score_text(message, color, font_size, x, y):
     text = font2.render(message, True, BLACK)
@@ -160,10 +159,10 @@ def game():
     while (Variables.counter > 0 and Variables.lives > 0):
 
         # draw to screen
-        screen.blit(background,(0,0))
+        screen.blit(background, (0, 0))
 
         message_to_screen(str(Variables.score) + " Points", RED, 32, 940, 32)
-        message_to_screen("Time " + str(Variables.counter), RED, 32, 80, 32 )
+        message_to_screen("Time " + str(Variables.counter), RED, 32, 80, 32)
         while len(all_enemies) < 8:
             new_enemy = Enemy()
             all_sprites.add(new_enemy)
@@ -174,9 +173,9 @@ def game():
 
         # check for events
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 sys.exit()
-            elif event.type == USEREVENT:
+            elif event.type == pygame.USEREVENT:
                 Variables.counter -= 1
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -186,15 +185,17 @@ def game():
                     all_shots.add(new_shot)
                     all_sprites.add(new_shot)
 
-        # check if a shot is in the rectangle of an enemy sprite, if so, kill enemy and shot
-        collision = pygame.sprite.groupcollide(all_shots, all_enemies, True, True)
+        # check if a shot is in the rectangle of an enemy sprite,
+        # if so, kill enemy and shot
+        collision = pygame.sprite.groupcollide(
+            all_shots, all_enemies, True, True)
         if collision:
             pygame.mixer.Sound.play(enemy_kill_sound)
-            Variables.score +=  50
+            Variables.score += 50
 
         for i in range(Variables.lives):
             hearts.append(heart)
-            screen.blit(hearts[i],(156  + (50 * i), 14))
+            screen.blit(hearts[i], (156 + (50 * i), 14))
         all_sprites.update()
         all_sprites.draw(screen)
         pygame.display.update()
@@ -207,49 +208,56 @@ def menu():
     while True:
 
         clock.tick(FPS)
-        screen.blit(menu1,(0,0))
+        screen.blit(menu1, (0, 0))
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key in (pygame.K_s, pygame.K_DOWN):
                     othermenu()
-                elif event.key in (pygame.K_KP_ENTER, pygame.K_RETURN, pygame.K_SPACE):
+                elif event.key in (
+                                    pygame.K_KP_ENTER, pygame.K_RETURN,
+                                    pygame.K_SPACE):
                     game()
 
         pygame.display.update()
-        screen.blit(menu1,(0,0))
+        screen.blit(menu1, (0, 0))
+
 
 def othermenu():
     while True:
-        screen.blit(menu2,(0,0))
+        screen.blit(menu2, (0, 0))
 
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key in (pygame.K_w, pygame.K_UP):
                     menu()
-                elif event.key in (pygame.K_KP_ENTER, pygame.K_RETURN, pygame.K_SPACE):
+                elif event.key in (
+                                    pygame.K_KP_ENTER, pygame.K_RETURN,
+                                    pygame.K_SPACE):
                     credit()
-
 
         pygame.display.update()
         clock.tick(FPS)
 
+
 def credit():
     while True:
-        screen.blit(credits,(0,0))
+        screen.blit(credits, (0, 0))
         # pygame.Rect(left, top, width, height)
         rect = pygame.Rect(275, 545, 530, 30)
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN:
-                if event.key in (pygame.K_KP_ENTER, pygame.K_RETURN, pygame.K_SPACE):
+            if event.type == pygame.KEYDOWN:
+                if event.key in (
+                                pygame.K_KP_ENTER, pygame.K_RETURN,
+                                pygame.K_SPACE):
                     game()
                 elif event.key == pygame.K_BACKSPACE:
                     othermenu()
@@ -258,22 +266,26 @@ def credit():
                 if rect.collidepoint(pos):
                     webbrowser.open("https://github.com/gutoarraes")
 
-
         pygame.display.update()
         clock.tick(FPS)
+
 
 def final_score():
 
     while True:
-        screen.blit(finalScore,(0,0))
-        final_score_text(str(Variables.score), BLACK, 70, width*0.52, height*0.5)
+        screen.blit(finalScore, (0, 0))
+        final_score_text(
+                        str(Variables.score), BLACK, 70,
+                        width * 0.52, height * 0.5)
 
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN:
-                if event.key in (pygame.K_KP_ENTER, pygame.K_RETURN, pygame.K_SPACE):
+            if event.type == pygame.KEYDOWN:
+                if event.key in (
+                                pygame.K_KP_ENTER, pygame.K_RETURN,
+                                pygame.K_SPACE):
                     Variables.counter = 30
                     Variables.score = 1
                     for enemy in all_enemies:
@@ -284,5 +296,6 @@ def final_score():
 
         pygame.display.update()
         clock.tick(FPS)
+
 
 menu()

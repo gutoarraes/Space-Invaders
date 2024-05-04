@@ -22,3 +22,7 @@
 * Multi level;
 * Different ships;
 * Power ups;
+
+### TODO
+
+[] New game upon clicking enter in the credits screen
