@@ -6,8 +6,8 @@
 
 ## Play
 
-**A** - moves *left*
-**D** - moves *right*
+**A** - moves *left*\
+**D** - moves *right*\
 **SPACE** - shoot a bullet
 
 ## Future ideas
