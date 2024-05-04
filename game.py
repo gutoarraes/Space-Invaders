@@ -286,13 +286,14 @@ def final_score():
                 if event.key in (
                                 pygame.K_KP_ENTER, pygame.K_RETURN,
                                 pygame.K_SPACE):
-                    Variables.counter = 30
-                    Variables.score = 1
                     for enemy in all_enemies:
                         enemy.kill()
                     for shot in all_shots:
                         shot.kill()
-                game()
+                    Variables.counter = 30
+                    Variables.score = 1
+                    Variables.lives = 3
+                    game()
 
         pygame.display.update()
         clock.tick(FPS)
